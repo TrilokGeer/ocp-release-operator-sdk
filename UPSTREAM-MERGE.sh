@@ -2,13 +2,13 @@
 #
 # This script takes as arguments:
 # $1 - [REQUIRED] upstream version as the first argument to merge
-# $2 - [optional] branch to update, defaults to master. could be a versioned release branch, e.g., release-3.10
+# $2 - [optional] branch to update, defaults to main. could be a versioned release branch, e.g., release-3.10
 # $3 - [optional] non-openshift remote to pull code from, defaults to upstream
 #
-# Note: this script is only maintained in the master branch. Other branches
+# Note: this script is only maintained in the main branch. Other branches
 # should copy this script into that branch in case newer changes have been
-# made. Something like this will get the file from the master branch without
-# staging it: git show master:UPSTREAM-MERGE.sh > UPSTREAM-MERGE.sh
+# made. Something like this will get the file from the main branch without
+# staging it: git show main:UPSTREAM-MERGE.sh > UPSTREAM-MERGE.sh
 #
 # Warning: this script resolves all conflicts by overwritting the conflict with
 # the upstream version. If a SDK specific patch was made downstream that is
@@ -17,7 +17,7 @@
 # Origin remote is assumed to point to openshift/ocp-release-operator-sdk
 
 version=$1
-rebase_branch=${2:-master}
+rebase_branch=${2:-main}
 upstream_remote=${3:-upstream}
 
 # sanity checks

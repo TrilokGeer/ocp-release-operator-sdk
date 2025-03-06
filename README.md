@@ -59,10 +59,10 @@ remote: Total 15 (delta 8), reused 3 (delta 0), pack-reused 0
 From https://github.com/operator-framework/operator-sdk
  * e3225a40..4c0a60dc  master                                                    -> upstream/master
 ```
-### New release to master
+### New release to main
 
 Once the `upstream` has been verified. You can now sync the upstream release tag
-you want. In this steps below we will sync `v1.4.1` to `master`.
+you want. In this steps below we will sync `v1.4.1` to `main`.
 
 To build simply use the `UPSTREAM-MERGE.sh` script.
 
@@ -72,10 +72,10 @@ Here is an example run using upstream tag `v1.4.1`
 
 ```
 $ ./UPSTREAM-MERGE.sh v1.4.1
-Already on 'master'
-Your branch is up to date with 'origin/master'.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
 Already up to date.
-Switched to a new branch 'v1.4.1-rebase-master'
+Switched to a new branch 'v1.4.1-rebase-main'
 Removing test/ansible/roles/inventorytest/tasks/main.yml
 Removing test/ansible/requirements.yml
 Removing ...
@@ -85,7 +85,7 @@ CONFLICT (file location): ...
 Automatic merge failed; fix conflicts and then commit the result.
 rm 'hack/generate/samples/internal/ansible/testdata/build/Dockerfile'
 ...
-[v1.4.1-rebase-master f7bb26ab] Merge upstream tag v1.4.1
+[v1.4.1-rebase-main f7bb26ab] Merge upstream tag v1.4.1
 5338217e (tag: v1.4.1, upstream/latest) Release v1.4.1 (#4521)
 5d6e333a [v1.4.x] docs/upgrade-sdk-version/v1.3.0.md: correct link to migration guide (#4517)
 ...
@@ -97,8 +97,8 @@ View the above incoming commits to verify all is well
 Now make a pull request.
 ```
 
-When the script is finished, you will be in a `UPSTREAM-TAG-rebase-master`
-branch. In our example above we were in `v1.4.1-rebase-master`. For more
+When the script is finished, you will be in a `UPSTREAM-TAG-rebase-main`
+branch. In our example above we were in `v1.4.1-rebase-main`. For more
 information about the output see the [breakdown of UPSTREAM-MERGE.sh
 output](#breakdown-of-upstream-merge.sh-output) section below.
 
@@ -110,7 +110,7 @@ inspection.
 Once the patches have been verified, create a release PR downstream:
 
 ```
-git push origin v1.4.1-rebase-master
+git push origin v1.4.1-rebase-main
 ```
 
 #### Breakdown of UPSTREAM-MERGE.sh output
@@ -119,14 +119,14 @@ Running `UPSTREAM-MERGE.sh` will spew out a bunch of output. We'll break it down
 here.
 
 The script will verify your branch is up to date and create a new branch
-`UPSTREAM-TAG-rebase-master`.
+`UPSTREAM-TAG-rebase-main`.
 
 ```
 $ ./UPSTREAM-MERGE.sh v1.4.1
-Already on 'master'
-Your branch is up to date with 'origin/master'.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
 Already up to date.
-Switched to a new branch 'v1.4.1-rebase-master'
+Switched to a new branch 'v1.4.1-rebase-main'
 ```
 
 Then the script will printout any files it needs to remove as part of syncing to
@@ -153,7 +153,7 @@ After removing and conflicted files are listed, the commits from the tags are
 printed out:
 
 ```
-[v1.4.1-rebase-master f7bb26ab] Merge upstream tag v1.4.1
+[v1.4.1-rebase-main f7bb26ab] Merge upstream tag v1.4.1
 5338217e (tag: v1.4.1, upstream/latest) Release v1.4.1 (#4521)
 5d6e333a [v1.4.x] docs/upgrade-sdk-version/v1.3.0.md: correct link to migration guide (#4517)
 e385e760 [v1.4.x] generate: fix multiple Go file type parsing bug (#4509)
@@ -221,7 +221,7 @@ View the above incoming commits to verify all is well
 Now make a pull request.
 ```
 
-Just like sync to master, verify things look okay. Ensure the patches apply,
+Just like sync to main, verify things look okay. Ensure the patches apply,
 if they do not you will have to either recreate the patch to make it apply,
 or remove it entirely if it is no longer needed. This will require manual
 intervention and inspection. You can manually verify the patches apply by running:
