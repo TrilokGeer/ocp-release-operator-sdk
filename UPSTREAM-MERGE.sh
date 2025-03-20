@@ -97,11 +97,6 @@ else
   unmerged_files="<NONE>"
 fi
 
-# update vendor
-go mod vendor
-# capture $? of go mod vendor, if it fails skip the add
-git add vendor
-
 
 # TODO (zeus): Service Catalog put the upstream Makefile into Makefile.sc
 # # update upstream Makefile changes, but don't overwrite build patch
@@ -132,6 +127,18 @@ git commit -m "Merge upstream tag $version" -m "Operator SDK $version" -m "Merge
 
 # verify merge is correct
 git --no-pager log --oneline "$(git merge-base origin/"$rebase_branch" tags/"$version")"..tags/"$version"
+
+# update vendor directory, abort if there's an error encountered
+go mod tidy && go mod vendor || { echo "go mod vendor failed. Aborting!"; exit 1; }
+# make sure that the vendor directory is actually updated 
+if ! git diff --quiet vendor/; then
+  # add the changes of go mod vendor
+  git add vendor
+  # make local commit
+  git commit -m "UPSTREAM: <drop>: Update vendor directory"
+else
+  echo "No changed files in vendor directory. Skipping add."
+fi
 
 printf "\\n** Upstream merge complete! **\\n"
 echo "View the above incoming commits to verify all is well"
