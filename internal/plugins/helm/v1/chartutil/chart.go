@@ -190,9 +190,28 @@ func fetchChartDependencies(chartPath string) error {
 		RepositoryConfig: settings.RepositoryConfig,
 		RepositoryCache:  settings.RepositoryCache,
 	}
+	// CVE-2025-53547: Ensure Chart.lock is not a symlink before dependency build to prevent code injection
+	if err := validateForSymlink(chartPath); err != nil {
+		return err
+	}
+
 	if err := man.Build(); err != nil {
 		fmt.Println(out.String())
 		return err
+	}
+	return nil
+}
+
+func validateForSymlink(chartPath string) error {
+	chartLockPath := filepath.Join(chartPath, "Chart.lock")
+	if info, err := os.Lstat(chartLockPath); err == nil {
+		if info.Mode()&os.ModeSymlink != 0 {
+			link, readErr := os.Readlink(chartLockPath)
+			if readErr != nil {
+				return fmt.Errorf("error reading symlink for %q: %w", chartLockPath, readErr)
+			}
+			return fmt.Errorf("the Chart.lock file is a symlink to %q. This could lead to code injection (CVE-2025-53547)", link)
+		}
 	}
 	return nil
 }
